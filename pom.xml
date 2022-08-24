@@ -16,6 +16,10 @@
     <module>gulimall-order</module>
     <module>gulimall-product</module>
     <module>gulimall-ware</module>
+    <module>renren-fast</module>
+    <module>renren-generator</module>
+    <module>gulimall-common</module>
+    <module>gulimall-getway</module>
   </modules>
   <name>guli_mall</name>
   <!-- FIXME change it to the project's website -->
