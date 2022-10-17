@@ -1,19 +1,15 @@
 package com.hzk.gulimall.coupon.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.hzk.gulimall.coupon.entity.SkuFullReductionEntity;
-import com.hzk.gulimall.coupon.service.SkuFullReductionService;
+import com.hzk.common.to.SkuReductionTo;
 import com.hzk.common.utils.PageUtils;
 import com.hzk.common.utils.R;
+import com.hzk.gulimall.coupon.entity.SkuFullReductionEntity;
+import com.hzk.gulimall.coupon.service.SkuFullReductionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.Map;
 
 
 
@@ -30,6 +26,14 @@ public class SkuFullReductionController {
     @Autowired
     private SkuFullReductionService skuFullReductionService;
 
+    /**
+     * 列表
+     */
+    @PostMapping("/saveReduction")
+    public R saveReduction(@RequestBody SkuReductionTo skuReductionTo){
+        skuFullReductionService.saveReduction(skuReductionTo);
+        return R.ok();
+    }
     /**
      * 列表
      */

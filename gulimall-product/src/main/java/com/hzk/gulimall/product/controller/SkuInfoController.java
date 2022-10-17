@@ -24,12 +24,20 @@ import java.util.Map;
 public class SkuInfoController {
     @Autowired
     private SkuInfoService skuInfoService;
-
     /**
      * 列表
      */
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params){
+        PageUtils page = skuInfoService.queryPageByCondition(params);
+
+        return R.ok().put("page", page);
+    }
+    /**
+     * 列表
+     */
+    @RequestMapping("/skuList")
+    public R skulist(@RequestParam Map<String, Object> params){
         PageUtils page = skuInfoService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -50,9 +58,8 @@ public class SkuInfoController {
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody SkuInfoEntity skuInfo){
-		skuInfoService.save(skuInfo);
-
+    public R save(@RequestBody SkuInfoEntity skuInfoEntity){
+		skuInfoService.save(skuInfoEntity);
         return R.ok();
     }
 

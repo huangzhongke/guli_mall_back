@@ -1,6 +1,5 @@
 server:
   port: 11000
-
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -35,15 +34,24 @@ spring:
         wall:
           config:
             multi-statement-allow: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false
+  redis:
+    host: 192.168.56.10
+    port: 6379
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
     db-config:
       id-type: auto
+    banner: false
+  type-aliases-package: com.hzk.gulimall.product.entity
 # mybatis-plus 配置逻辑删除 这步可不配
 #      logic-delete-value: 0
 logging:
   level:
-    com.hzk.gulimall: debug
-
+    com.hzk.gulimall: error
 #      logic-not-delete-value: 1
