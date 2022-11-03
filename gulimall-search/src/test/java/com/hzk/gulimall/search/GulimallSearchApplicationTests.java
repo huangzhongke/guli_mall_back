@@ -80,6 +80,7 @@ class GulimallSearchApplicationTests {
         private Integer age;
         private String gender;
     }
+
     @Data
     class Account {
         private int account_number;
@@ -94,5 +95,14 @@ class GulimallSearchApplicationTests {
         private String city;
         private String state;
 
+    }
+
+
+    @Test
+    void t1() {
+        String str = "1_5寸"; //length 2
+        String[] split = str.split("_");
+        String[] s2 = split[1].split(":");
+        System.out.println(s2.length);
     }
 }

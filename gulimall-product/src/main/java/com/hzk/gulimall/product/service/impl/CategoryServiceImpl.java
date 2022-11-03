@@ -14,7 +14,11 @@ import com.hzk.gulimall.product.service.CategoryService;
 import com.hzk.gulimall.product.vo.Catelog2Vo;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -34,6 +38,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Autowired
     StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    RedissonClient redisson;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -78,6 +85,19 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return list.toArray(new Long[list.size()]);
     }
 
+    /**
+     * 级联更新所有关联的数据
+     * @CacheEvict 失效模式
+     * @param category
+     *  @CacheEvict 当执行下面方法，会根据catelog:xxx删除这个索引
+     *  @CacheEvict(value = "catelog",allEntries = true) 删除键为catelog下的所有索引
+     */
+    //@CacheEvict(value = "catelog" ,key = "'getLevel1Categorys'")
+    //@Caching(evict = {@CacheEvict(value = "catelog" ,key = "'getLevel1Categorys'"),
+    //                 @CacheEvict(value = "catelog" ,key = "'getCatalogJson'"), 删除多个索引
+    //})
+
+    @CacheEvict(value = "catelog",allEntries = true)
     @Transactional
     @Override
     public void updateCascade(CategoryEntity category) {
@@ -87,10 +107,13 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         }
     }
 
+    @Cacheable(value = {"catelog"},key = "#root.methodName", sync = true)
     @Override
     public List<CategoryEntity> getLevel1Categorys() {
-        List<CategoryEntity> list = baseMapper.selectList(new QueryWrapper<CategoryEntity>().lambda().eq(CategoryEntity::getParentCid, 0));
 
+        System.out.println("getLevel1Categorys");
+        List<CategoryEntity> list = baseMapper.selectList(new QueryWrapper<CategoryEntity>().lambda().eq(CategoryEntity::getParentCid, 0));
+        //return  null;
         return list;
     }
 
@@ -105,8 +128,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
      *
      * @return
      */
-    @Override
-    public Map<String, List<Catelog2Vo>> getCatalogJson() {
+    //@Override
+    public Map<String, List<Catelog2Vo>> getCatalogJson2() {
         /**
          *  1 . 缓存穿透 给空结果也加上缓存
          *  2 . 缓存击穿 加锁
@@ -115,7 +138,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         String catelogJSON = stringRedisTemplate.opsForValue().get("catelogJSON");
         if (StringUtils.isEmpty(catelogJSON)) {
             System.out.println("缓存未命中，查询数据库...");
-            Map<String, List<Catelog2Vo>> catalogJsonFromDB = getCatalogJsonFromDBWithRedisLock();
+            Map<String, List<Catelog2Vo>> catalogJsonFromDB = getCatalogJsonFromDBWithRedissonLock();
 
             return catalogJsonFromDB;
         }
@@ -123,6 +146,36 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         Map<String, List<Catelog2Vo>> result = JSONObject.parseObject(catelogJSON, new TypeReference<Map<String, List<Catelog2Vo>>>() {
         });
         return result;
+    }
+
+
+    @Cacheable(value = "catelog", key = "#root.methodName",sync = true)
+    @Override
+    public Map<String, List<Catelog2Vo>> getCatalogJson() {
+        List<CategoryEntity> categoryEntityList = baseMapper.selectList(null);
+        List<CategoryEntity> level1Categorys = getListByParentCid(categoryEntityList, 0L);
+        Map<String, List<Catelog2Vo>> list = level1Categorys.stream().collect(Collectors.toMap(k -> k.getCatId().toString(), v -> {
+            List<CategoryEntity> categoryEntities = getListByParentCid(categoryEntityList, v.getCatId());
+            List<Catelog2Vo> catelog2Vos = null;
+            if (categoryEntities != null) {
+                catelog2Vos = categoryEntities.stream().map(l2 -> {
+                    Catelog2Vo catelog2Vo = new Catelog2Vo(v.getCatId().toString(), null, l2.getCatId().toString(), l2.getName());
+
+                    List<CategoryEntity> l3List = getListByParentCid(categoryEntityList, l2.getCatId());
+                    if (l3List != null) {
+                        List<Catelog2Vo.Category3Vo> category3Vos = l3List.stream().map(l3 -> {
+                            Catelog2Vo.Category3Vo category3Vo = new Catelog2Vo.Category3Vo(l2.getCatId().toString(), l3.getCatId().toString(), l3.getName());
+                            return category3Vo;
+                        }).collect(Collectors.toList());
+                        catelog2Vo.setCatalog3List(category3Vos);
+                    }
+
+                    return catelog2Vo;
+                }).collect(Collectors.toList());
+            }
+            return catelog2Vos;
+        }));
+        return list;
     }
 
     /**
@@ -163,7 +216,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                 catelogJson = getDataFromDb();
             } finally {
                 //做完操作需要释放锁，释放的过程也是一个原子操作
-                String script =  "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+                String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
 
                 Long lock1 = stringRedisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class), Arrays.asList("lock"), uuid);
 
@@ -182,6 +235,27 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
             return getCatalogJsonFromDBWithRedisLock();
         }
 
+
+    }
+
+
+    /**
+     * Redisson 分布式锁
+     *
+     * @return
+     */
+    public Map<String, List<Catelog2Vo>> getCatalogJsonFromDBWithRedissonLock() {
+        RLock lock = redisson.getLock("CatelogJson-lock");
+        // 加锁
+        lock.lock();
+        Map<String, List<Catelog2Vo>> catelogJson = null;
+        try {
+            catelogJson = getDataFromDb();
+        } finally {
+            lock.unlock();
+        }
+
+        return catelogJson;
 
     }
 

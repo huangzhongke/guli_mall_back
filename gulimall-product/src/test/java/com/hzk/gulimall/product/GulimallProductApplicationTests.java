@@ -28,8 +28,8 @@ class GulimallProductApplicationTests {
     RedissonClient redissonClient;
     @Test
     void contextLoads() {
-        redissonClient.
         System.out.println(redissonClient);
+
     }
 
     @Test

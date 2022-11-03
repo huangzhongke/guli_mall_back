@@ -1,4 +1,3 @@
-PUT product
 {
   "mappings": {
     "properties": {
@@ -17,7 +16,7 @@ PUT product
       },
       "skuImg": {
         "type": "keyword",
-        "index": false,
+        "index": false, // 后续会因为查询问题要删除
         "doc_values": false
       },
       "saleCount": {
