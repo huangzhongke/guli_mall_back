@@ -54,4 +54,9 @@ mybatis-plus:
 logging:
   level:
     com.hzk.gulimall: error
+gulimall:
+  thread:
+    core-size: 20
+    max-size: 200
+    keep-alive-time: 10
 #      logic-not-delete-value: 1

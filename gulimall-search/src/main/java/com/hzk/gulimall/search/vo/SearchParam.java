@@ -35,7 +35,7 @@ public class SearchParam {
     /**
      * 是否显示有货
      */
-    private Integer hasStock = 1;
+    private Integer hasStock;
 
     /**
      * 1_500 _500 500_
@@ -57,5 +57,7 @@ public class SearchParam {
      * 原生的所有查询条件
      */
     private String _queryString;
+
+
 
 }

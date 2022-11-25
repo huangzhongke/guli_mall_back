@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -48,5 +49,11 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
         }
 
         //TODO 同步更新其他冗余
+    }
+
+    @Override
+    public List<BrandEntity> getBrandsByIds(List<Long> brandId) {
+
+        return baseMapper.selectList(new QueryWrapper<BrandEntity>().lambda().in(BrandEntity::getBrandId,brandId));
     }
 }

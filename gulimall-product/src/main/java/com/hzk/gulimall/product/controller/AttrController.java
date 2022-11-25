@@ -30,21 +30,22 @@ public class AttrController {
 
 
     ///product/attr/update/{spuId}
-     @PostMapping("/update/{spuId}")
-     public R updateSpuAttr(@PathVariable("spuId") Long spuId,
-                            @RequestBody List<ProductAttrValueEntity> entities){
-         productAttrValueService.updateSpuAttr(spuId,entities);
+    @PostMapping("/update/{spuId}")
+    public R updateSpuAttr(@PathVariable("spuId") Long spuId,
+                           @RequestBody List<ProductAttrValueEntity> entities) {
+        productAttrValueService.updateSpuAttr(spuId, entities);
 
-         return R.ok();
-     }
+        return R.ok();
+    }
 
     // /product/attr/base/listforspu/{spuId}
     @Autowired
     private ProductAttrValueService productAttrValueService;
+
     @GetMapping("/base/listforspu/{spuId}")
     public R baseAttrlistforspu(@PathVariable("spuId") Long spuId) {
-        List<ProductAttrValueEntity> list =  productAttrValueService.baseAttrlistforspu(spuId);
-        return R.ok().put("data",list);
+        List<ProductAttrValueEntity> list = productAttrValueService.baseAttrlistforspu(spuId);
+        return R.ok().put("data", list);
     }
 
     @GetMapping("/{attrType}/list/{catlogId}")
@@ -114,5 +115,7 @@ public class AttrController {
 
         return R.ok();
     }
+
+
 
 }

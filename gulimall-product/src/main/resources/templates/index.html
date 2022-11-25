@@ -618,6 +618,13 @@
         window.location.href = "http://search.gulimall.com/list.html?keyword=" + keyword;
     }
 
+    $("#searchText").bind("keypress", function (event) {
+        if (event.which === 13) {
+            search()
+            //点击回车要执行的事件
+        }
+    })
+
 </script>
 <script type="text/javascript" src="/static/index/js/text.js"></script>
 <script type="text/javascript" src="/static/index/js/header.js"></script>

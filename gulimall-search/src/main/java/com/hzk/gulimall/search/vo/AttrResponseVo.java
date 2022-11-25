@@ -1,4 +1,4 @@
-package com.hzk.gulimall.product.vo;
+package com.hzk.gulimall.search.vo;
 
 import lombok.Data;
 
@@ -7,11 +7,10 @@ import java.io.Serializable;
 /**
  * @author kee
  * @version 1.0
- * @date 2022/9/5 11:00
+ * @date 2022/11/16 16:13
  */
 @Data
-public class AttrVo implements Serializable {
-
+public class AttrResponseVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -55,4 +54,9 @@ public class AttrVo implements Serializable {
 
     private Integer valueType;
 
+    private String groupName;
+
+    private String catelogName;
+
+    private Long[] catelogPath;
 }

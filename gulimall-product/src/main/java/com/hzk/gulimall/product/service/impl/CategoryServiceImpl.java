@@ -111,7 +111,6 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     @Override
     public List<CategoryEntity> getLevel1Categorys() {
 
-        System.out.println("getLevel1Categorys");
         List<CategoryEntity> list = baseMapper.selectList(new QueryWrapper<CategoryEntity>().lambda().eq(CategoryEntity::getParentCid, 0));
         //return  null;
         return list;

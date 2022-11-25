@@ -3,7 +3,9 @@ package com.hzk.gulimall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hzk.common.utils.PageUtils;
 import com.hzk.gulimall.product.entity.SkuSaleAttrValueEntity;
+import com.hzk.gulimall.product.vo.SkuItemVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +18,7 @@ import java.util.Map;
 public interface SkuSaleAttrValueService extends IService<SkuSaleAttrValueEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    List<SkuItemVo.SkuItemSaleAttrVo> getSaleAttrBySpuId(Long spuId);
 }
 
