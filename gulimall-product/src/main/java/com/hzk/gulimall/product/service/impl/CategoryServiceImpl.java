@@ -98,7 +98,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     //})
 
     @CacheEvict(value = "catelog",allEntries = true)
-    @Transactional
+    @Transactional 
     @Override
     public void updateCascade(CategoryEntity category) {
         this.updateById(category);

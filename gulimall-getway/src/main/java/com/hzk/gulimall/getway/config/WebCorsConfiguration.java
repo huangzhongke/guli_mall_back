@@ -1,4 +1,4 @@
-package com.hzk.gulimall.gulimallgetway.config;
+package com.hzk.gulimall.getway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

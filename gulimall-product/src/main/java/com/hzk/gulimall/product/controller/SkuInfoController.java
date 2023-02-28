@@ -24,6 +24,9 @@ import java.util.Map;
 public class SkuInfoController {
     @Autowired
     private SkuInfoService skuInfoService;
+
+
+
     /**
      * 列表
      */

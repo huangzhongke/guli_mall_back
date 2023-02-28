@@ -1,5 +1,5 @@
 server:
-  port: 4000
+  port: 4001
 
 spring:
   cloud:
@@ -9,3 +9,11 @@ spring:
       oss:
         endpoint: oss-cn-hangzhou.aliyuncs.com
         bucket: gulimall-kee
+      sms:
+        host: http://dingxin.market.alicloudapi.com
+        path: /dx/sendSms
+        method: POST
+        appcode: fc9a11c89fee4b3cb12b217e6c461ed0
+        tpl-id: TP1711063
+
+

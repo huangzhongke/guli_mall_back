@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -67,10 +67,13 @@
         </b>
         <ul>
             <li>
-                <a href="/static/search/#" class="li_2">你好，请登录</a>
+                <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/login.html"
+                   class="li_2">你好，请登录</a>
+                <a th:if="${session.loginUser != null}" href="http://auth.gulimall.com/login.html"
+                   class="li_2" style="width: 100px"> [[${session.loginUser.nickname}]]</a>
             </li>
             <li>
-                <a href="/static/search/#">免费注册</a>
+                <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/reg.html">免费注册</a>
             </li>
             <span>|</span>
             <li>
@@ -769,7 +772,7 @@
             </div>
         </div>
 
-<!-- 遍历面包屑功能       -->
+        <!-- 遍历面包屑功能       -->
         <div class="JD_ipone_one c">
             <a th:each="nav:${result.navs}" th:href="${nav.link}">
                 <span th:text="${nav.navName}"></span>
@@ -792,7 +795,7 @@
             </div>
             <div class="JD_nav_logo" th:with="brandId=${param.brandId}">
                 <!--品牌-->
-                <div  th:if="${#strings.isEmpty(brandId)}" class="JD_nav_wrap" >
+                <div th:if="${#strings.isEmpty(brandId)}" class="JD_nav_wrap">
                     <div class="sl_key">
                         <span><b>品牌：</b></span>
                     </div>
@@ -854,7 +857,8 @@
                     </div>
                 </div>
                 <!--屏幕尺寸-->
-                <div class="JD_pre" th:each="attr:${result.attrs}" th:if="${!#lists.contains(result.attrIds,attr.attrId)}">
+                <div class="JD_pre" th:each="attr:${result.attrs}"
+                     th:if="${!#lists.contains(result.attrIds,attr.attrId)}">
                     <div class="sl_key">
                         <span th:text="${attr.attrName}">屏幕尺寸：</span>
                     </div>
@@ -1196,7 +1200,8 @@
                                 </li>
                                 <li>
                                     <a th:with="check = ${param.hasStock}">
-                                        <input id="showHasStock" type="checkbox" th:checked="${#strings.equals(check,'1')}">
+                                        <input id="showHasStock" type="checkbox"
+                                               th:checked="${#strings.equals(check,'1')}">
                                         仅显示有货
                                     </a>
                                 </li>
@@ -1218,8 +1223,8 @@
                                 <a href="/static/search/#">关注</a>
                             </div>
                             <p class="da">
-                                <a th:href="|http://item.gulimall.com/${product.skuId}.html|" >
-                                    <img  class="dim" th:src="${product.skuImg}">
+                                <a th:href="|http://item.gulimall.com/${product.skuId}.html|">
+                                    <img class="dim" th:src="${product.skuImg}">
                                 </a>
                             </p>
                             <ul class="tab_im">
@@ -2023,7 +2028,7 @@
         $(this).css("color", "#727272")
     })
 
-    function searchProducts(name, value,forceAdd) {
+    function searchProducts(name, value, forceAdd) {
         // var href = location.href;
         // if (name !== "attrs"){
         //     if (href.includes(name)) {
@@ -2044,11 +2049,11 @@
         //
         //     }
         // }
-        location.href = replaceParamVal(location.href,name,value,forceAdd)
+        location.href = replaceParamVal(location.href, name, value, forceAdd)
     }
 
     function searchByKeyword() {
-        searchProducts("keyword", $("#keyword_input").val(),false)
+        searchProducts("keyword", $("#keyword_input").val(), false)
     }
 
     $("#keyword_input").bind("keypress", function (e) {
@@ -2074,7 +2079,7 @@
         var href = location.href;
         if (href.includes("pageNum")) {
             //替换pageNum
-            location.href = replaceParamVal(href, "pageNum", pn,false);
+            location.href = replaceParamVal(href, "pageNum", pn, false);
         } else {
             if (href.includes("?")) {
                 location.href = location.href + "&pageNum=" + pn;
@@ -2100,7 +2105,7 @@
                 nUrl = oUrl.replace(re, paramName + '=' + replaceVal);
             }
         } else {
-            if (oUrl.includes("?") ) {
+            if (oUrl.includes("?")) {
                 nUrl = oUrl + "&" + paramName + "=" + replaceVal;
             } else {
                 nUrl = oUrl + "?" + paramName + "=" + replaceVal;
@@ -2121,7 +2126,7 @@
         }
         if (href.includes("pageNum")) {
             //替换pageNum
-            location.href = replaceParamVal(href, "pageNum", pageNo,false);
+            location.href = replaceParamVal(href, "pageNum", pageNo, false);
         } else {
             location.href = location.href + "?&pageNum=" + pageNo;
         }
@@ -2131,7 +2136,7 @@
         changeStyle(this);
         let sort = $(this).attr("sort");
         sort = $(this).hasClass("desc") ? sort + "_desc" : sort + "_asc";
-        location.href = replaceParamVal(location.href, "sort", sort,false);
+        location.href = replaceParamVal(location.href, "sort", sort, false);
 
         return false;
     })
@@ -2165,17 +2170,17 @@
         let to = $(`#skuPriceTo`).val();
 
         let query = from + "_" + to;
-        location.href = replaceParamVal(location.href, "skuPrice", query,false);
+        location.href = replaceParamVal(location.href, "skuPrice", query, false);
     })
 
 
     $("#showHasStock").change(function () {
         // alert( $(this).prop("checked") );
-        if( $(this).prop("checked") ) {
-            location.href = replaceParamVal(location.href,"hasStock",1,false);
+        if ($(this).prop("checked")) {
+            location.href = replaceParamVal(location.href, "hasStock", 1, false);
         } else {
             let re = eval('/(hasStock=)([^&]*)/gi');
-            location.href = (location.href+"").replace(re,"");
+            location.href = (location.href + "").replace(re, "");
         }
         return false;
     })

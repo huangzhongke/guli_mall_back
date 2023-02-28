@@ -1,10 +1,10 @@
-package com.hzk.gulimall.gulimallgetway;
+package com.gulimall.ssoserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GulimallGetwayApplicationTests {
+class GulimallTestSsoServerApplicationTests {
 
     @Test
     void contextLoads() {

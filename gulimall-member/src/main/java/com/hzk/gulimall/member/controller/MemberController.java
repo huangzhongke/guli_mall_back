@@ -1,9 +1,15 @@
 package com.hzk.gulimall.member.controller;
 
+import com.hzk.common.exception.BizCodeEnum;
 import com.hzk.common.utils.PageUtils;
 import com.hzk.common.utils.R;
 import com.hzk.gulimall.member.entity.MemberEntity;
+import com.hzk.gulimall.member.exception.PhoneExistException;
+import com.hzk.gulimall.member.exception.UsernameExistException;
 import com.hzk.gulimall.member.service.MemberService;
+import com.hzk.gulimall.member.vo.MemberLoginVo;
+import com.hzk.gulimall.member.vo.MemberRegistVo;
+import com.hzk.gulimall.member.vo.SocialUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +31,38 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
+    @PostMapping("/oauth/login")
+    public R oauthLogin(@RequestBody SocialUser vo){
+        MemberEntity member = memberService.login(vo);
+        if (member == null){
+            return R.error(BizCodeEnum.LOGINACCOUNT_PASSWORD_INVALID_EXCEPTION.getCode(), BizCodeEnum.LOGINACCOUNT_PASSWORD_INVALID_EXCEPTION.getMsg());
+        }else {
+            return R.ok().setData(member);
+        }
+    }
 
+
+    @PostMapping("/regist")
+    public R regist(@RequestBody MemberRegistVo vo){
+        try {
+            memberService.regist(vo);
+        } catch (PhoneExistException e) {
+            return R.error(BizCodeEnum.PHONE_EXIST_EXCEPTION.getCode(),BizCodeEnum.PHONE_EXIST_EXCEPTION.getMsg());
+        }catch (UsernameExistException e){
+            return R.error(BizCodeEnum.USER_EXIST_EXCEPTION.getCode(),BizCodeEnum.USER_EXIST_EXCEPTION.getMsg());
+        }
+        return R.ok();
+    }
+
+    @PostMapping("/login")
+    public R login(@RequestBody MemberLoginVo vo){
+        MemberEntity member = memberService.login(vo);
+        if (member == null){
+            return R.error(BizCodeEnum.LOGINACCOUNT_PASSWORD_INVALID_EXCEPTION.getCode(), BizCodeEnum.LOGINACCOUNT_PASSWORD_INVALID_EXCEPTION.getMsg());
+        }else {
+            return R.ok().setData(member);
+        }
+    }
 
     /**
      * 列表
