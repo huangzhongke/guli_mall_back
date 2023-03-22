@@ -1,16 +1,16 @@
 package com.hzk.gulimall.ware.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hzk.common.utils.PageUtils;
 import com.hzk.common.utils.Query;
-
 import com.hzk.gulimall.ware.dao.WareOrderTaskDao;
 import com.hzk.gulimall.ware.entity.WareOrderTaskEntity;
 import com.hzk.gulimall.ware.service.WareOrderTaskService;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 
 @Service("wareOrderTaskService")
@@ -24,6 +24,12 @@ public class WareOrderTaskServiceImpl extends ServiceImpl<WareOrderTaskDao, Ware
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public WareOrderTaskEntity getOrderTaskByOrderSn(String orderSn) {
+
+        return this.getOne(new QueryWrapper<WareOrderTaskEntity>().lambda().eq(WareOrderTaskEntity::getOrderSn,orderSn));
     }
 
 }

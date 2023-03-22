@@ -1,6 +1,6 @@
 package com.hzk.gulimall.product.feign;
 
-import com.hzk.common.es.SkuEsModel;
+import com.hzk.common.to.es.SkuEsModel;
 import com.hzk.common.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

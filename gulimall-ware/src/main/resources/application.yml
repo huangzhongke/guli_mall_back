@@ -46,3 +46,5 @@ mybatis-plus:
 logging:
   level:
     com.hzk.gulimall: debug
+seata:
+  tx-service-group: gulimall-ware

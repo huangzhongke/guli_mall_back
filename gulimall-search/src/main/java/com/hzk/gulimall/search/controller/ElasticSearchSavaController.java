@@ -1,6 +1,6 @@
 package com.hzk.gulimall.search.controller;
 
-import com.hzk.common.es.SkuEsModel;
+import com.hzk.common.to.es.SkuEsModel;
 import com.hzk.common.exception.BizCodeEnum;
 import com.hzk.common.utils.R;
 import com.hzk.gulimall.search.service.ProductSavaService;

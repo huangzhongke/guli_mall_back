@@ -67,6 +67,7 @@ public class SysLogAspect {
 		SysLog syslog = method.getAnnotation(SysLog.class);
 		if(syslog != null){
 			//注解上的描述
+			//sysLog.setOperation(syslog.value());
 			sysLog.setOperation(syslog.value());
 		}
 

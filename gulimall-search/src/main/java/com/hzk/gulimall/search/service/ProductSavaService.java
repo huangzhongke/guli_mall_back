@@ -1,6 +1,6 @@
 package com.hzk.gulimall.search.service;
 
-import com.hzk.common.es.SkuEsModel;
+import com.hzk.common.to.es.SkuEsModel;
 
 import java.io.IOException;
 import java.util.List;

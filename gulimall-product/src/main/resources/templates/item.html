@@ -58,17 +58,16 @@
                 </li>
             </ul>
             <ul class="header_ul_right">
-                <li style="border: 0;">
+                <li style="width: 100px">
                     <a th:if="${session.loginUser==null}" href="http://auth.gulimall.com/login.html"
                        class="aa">你好，请登录</a>
+                    <a th:if="${session.loginUser!=null}" class="aa">[[${session.loginUser.nickname}]]</a>
                 </li>
-                <li>
-                    <a th:if="${session.loginUser!=null}" class="aa" style="width: 100px">[[${session.loginUser.nickname}]]</a>
-                </li>
-                <li th:if="${session.loginUser==null}"><a href="http://auth.gulimall.com/reg.html" style="color: red;">免费注册</a>
+                <li th:if="${session.loginUser==null}">
+                    <a href="http://auth.gulimall.com/reg.html" style="color: red;">免费注册</a>
                     |
                 </li>
-                <li><a href="/static/item/javascript:;" class="aa">我的订单</a> |</li>
+                <li><a href="http://order.gulimall.com/list.html" class="aa">我的订单</a> |</li>
                 <li class="jingdong"><a href="/static/item/javascript:;">我的京东</a><span
                         class="glyphicon glyphicon-menu-down">|</span>
                     <ol class="jingdong_ol">
@@ -268,7 +267,7 @@
                 <div class="nav_top_two"><input type="text"/>
                     <button>搜索</button>
                 </div>
-                <div class="nav_top_three"><a href="/static/item/../JD_Shop/One_JDshop.html">我的购物车</a><span
+                <div class="nav_top_three"><a href="http://cart.gulimall.com/cart.html">我的购物车</a><span
                         class="glyphicon glyphicon-shopping-cart"></span>
                     <div class="nav_top_three_1">
                         <img src="/static/item/img/44.png"/>购物车还没有商品，赶紧选购吧！
@@ -602,7 +601,7 @@
 
                         </li>
                         <li>
-                            <span th:text="${item.hasStock?'有货':'无货'}">无货</span>， 此商品暂时售完
+                            <span th:text="${item.hasStock?'有货':'无货'}">无货</span>
                         </li>
                     </ul>
                 </div>
@@ -649,7 +648,7 @@
                         </div>
                     </div>
                     <div class="box-btns-two">
-                        <a href="#" id="addToCartA" th:attr="skuId=${item.info.skuId}">
+                        <a href="#" id="addToCartA" th:attr="skuId=${item.info.skuId},hasStock=${item.hasStock}?1:0">
                             加入购物车
                         </a>
                     </div>
@@ -1357,7 +1356,15 @@
     $("#addToCartA").click(function () {
         var num = $("#numInput").val()
         var skuId = $(this).attr("skuId")
-        location.href = "http://cart.gulimall.com/addToCart?skuId=" + skuId + "&num=" + num
+        var hasStock = $(this).attr("hasStock")
+        //"false" 如果用 new Boolean("false") 打印结果为true
+        if (hasStock == 1) {
+
+            location.href = "http://cart.gulimall.com/addToCart?skuId=" + skuId + "&num=" + num
+        }else {
+            alert("该商品暂无库存，请选择其他商品！")
+        }
+
         return false
     })
 </script>

@@ -19,7 +19,6 @@ import java.util.UUID;
  * @version 1.0
  * @date 2023/2/2 16:16
  */
-
 public class CartInterceptor implements HandlerInterceptor {
     //线程共享
     public static ThreadLocal<UserInfoTo> threadLocal = new ThreadLocal<>();

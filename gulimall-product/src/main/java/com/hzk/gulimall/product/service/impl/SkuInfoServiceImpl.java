@@ -1,15 +1,19 @@
 package com.hzk.gulimall.product.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hzk.common.to.SkuHasStockVo;
 import com.hzk.common.utils.PageUtils;
 import com.hzk.common.utils.Query;
+import com.hzk.common.utils.R;
 import com.hzk.gulimall.product.dao.SkuInfoDao;
 import com.hzk.gulimall.product.entity.SkuImagesEntity;
 import com.hzk.gulimall.product.entity.SkuInfoEntity;
 import com.hzk.gulimall.product.entity.SpuInfoDescEntity;
+import com.hzk.gulimall.product.feign.WareFeignService;
 import com.hzk.gulimall.product.service.*;
 import com.hzk.gulimall.product.vo.SkuItemVo;
 import org.apache.commons.lang.StringUtils;
@@ -17,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -39,6 +44,9 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
 
     @Autowired
     ThreadPoolExecutor executor;
+
+    @Autowired
+    WareFeignService wareFeignService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -135,8 +143,17 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
             skuItemVo.setImages(images);
         }, executor);
 
+        CompletableFuture<Void> stockFuture = CompletableFuture.runAsync(() -> {
+            R r = wareFeignService.getSkuHasStock(Arrays.asList(skuId));
+            if (r.getCode() == 0){
+                List<SkuHasStockVo> data = r.getData(new TypeReference<List<SkuHasStockVo>>() {
+                });
+                SkuHasStockVo skuHasStockVo = data.get(0);
+                skuItemVo.setHasStock(skuHasStockVo.getHasStock());
+            }
+        }, executor);
         try {
-            CompletableFuture.allOf(descFuture,baseAttrFuture,saleAttrFuture,imageFuture).get();
+            CompletableFuture.allOf(descFuture,baseAttrFuture,saleAttrFuture,imageFuture,stockFuture).get();
         } catch (Exception e) {
             e.printStackTrace();
         }

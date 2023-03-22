@@ -2,6 +2,7 @@ package com.hzk.gulimall.product.web;
 
 
 import com.hzk.gulimall.product.entity.CategoryEntity;
+import com.hzk.gulimall.product.feign.CartFeignService;
 import com.hzk.gulimall.product.service.CategoryService;
 import com.hzk.gulimall.product.vo.Catelog2Vo;
 import org.redisson.api.RLock;
@@ -29,13 +30,16 @@ public class IndexController {
 
     @Autowired
     RedissonClient redissonClient;
-
+    @Autowired
+    CartFeignService cartFeignService;
     @GetMapping(value = {"/", "index.html"})
     private String indexPage(Model model) {
 
         //1、查出所有的一级分类
         List<CategoryEntity> categoryEntities = categoryService.getLevel1Categorys();
         model.addAttribute("categories", categoryEntities);
+        String cartItemsCount = cartFeignService.getCartItemsCount();
+        model.addAttribute("cartItemsCount",cartItemsCount);
         return "index";
     }
 

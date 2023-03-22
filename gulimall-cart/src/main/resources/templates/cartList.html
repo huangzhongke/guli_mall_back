@@ -24,14 +24,14 @@
             <ul class="header-right">
                 <li>
                     <a th:if="${session.loginUser!=null}">欢迎: [[${session.loginUser.nickname}]]</a>
-                    <a href="http://auth.gulimall.com/login.html" th:if="${session.loginUser==null}"> 你好，请登录 </a>
+                    <a th:if="${session.loginUser==null}" href="http://auth.gulimall.com/login.html"> 你好，请登录 </a>
 
                 </li>
                 <li>
                     <a th:if="${session.loginUser==null}" href="http://auth.gulimall.com/reg.html" class="li_2">免费注册</a>
                 </li>
                 <li class="spacer"></li>
-                <li><a href="">我的订单</a></li>
+                <li><a href="http://order.gulimall.com/list.html">我的订单</a></li>
                 <li class="spacer"></li>
 
             </ul>
@@ -179,7 +179,7 @@
     </div>
     <div>
         <button type="button" onclick="deleteItem()">删除</button>
-<!--        <button type="button" >取消</button>-->
+        <!--        <button type="button" >取消</button>-->
 
     </div>
 </div>
@@ -228,7 +228,7 @@
 <script src="/static/cart/js/index.js" charset="utf-8"></script>
 <script type="text/javascript">
     function toTrade() {
-        window.location.href = "http://cart.gmall.com:8087/toTrade";
+        window.location.href = "http://order.gulimall.com/toTrade";
     }
 
     function toItem(skuId) {
@@ -788,10 +788,12 @@
         location.href = "http://cart.gulimall.com/countItem?skuId=" + skuId + "&count=" + count
     })
     var deleteId = 0
-    function deleteItem(){
+
+    function deleteItem() {
         location.href = "http://cart.gulimall.com/deleteItem?skuId=" + deleteId
     }
-    $(".deleteBtn").click(function (){
+
+    $(".deleteBtn").click(function () {
         deleteId = $(this).attr("skuId")
     })
 </script>

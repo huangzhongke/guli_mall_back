@@ -9,7 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 /**
  * @author kee
@@ -24,6 +27,25 @@ public class CartController {
 
     @Autowired
     StringRedisTemplate redisTemplate;
+
+    @ResponseBody
+    @GetMapping("/cart/count")
+    public String getCartItemsCount(){
+        CartVo cart = cartService.getCart();
+
+        List<CartItemVo> items = cart.getItems();
+        if (items != null){
+            return String.valueOf(items.size());
+        }else {
+            return "0";
+        }
+
+    }
+    @ResponseBody
+    @GetMapping("/currentUserCartItems")
+    public List<CartItemVo> getCurrentUserCartItems(){
+        return cartService.getCurrentUserCartItems();
+    }
 
     @GetMapping("/deleteItem")
     public String deleteItem(@RequestParam("skuId") Long skuId){

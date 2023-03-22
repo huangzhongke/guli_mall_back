@@ -1,6 +1,6 @@
 package com.hzk.gulimall.search.vo;
 
-import com.hzk.common.es.SkuEsModel;
+import com.hzk.common.to.es.SkuEsModel;
 import lombok.Data;
 
 import java.util.ArrayList;

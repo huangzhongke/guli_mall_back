@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hzk.common.constant.ProductConstant;
-import com.hzk.common.es.SkuEsModel;
+import com.hzk.common.to.es.SkuEsModel;
 import com.hzk.common.to.SkuHasStockVo;
 import com.hzk.common.to.SkuReductionTo;
 import com.hzk.common.to.SpuBoundTo;
@@ -316,6 +316,14 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
              */
         }
 
+    }
+
+    @Override
+    public SpuInfoEntity getSpuInfoBySkuId(Long skuId) {
+        SkuInfoEntity skuInfo = skuInfoService.getById(skuId);
+        SpuInfoEntity spuInfo = getById(skuInfo.getSpuId());
+
+        return spuInfo;
     }
 
 

@@ -3,6 +3,8 @@ package com.hzk.gulimall.cart.service;
 import com.hzk.gulimall.cart.vo.CartItemVo;
 import com.hzk.gulimall.cart.vo.CartVo;
 
+import java.util.List;
+
 /**
  * @author kee
  * @version 1.0
@@ -46,4 +48,6 @@ public interface CartService {
     void changeCountItem(Long skuId, Integer count);
 
     void deleteItem(Long skuId);
+
+    List<CartItemVo> getCurrentUserCartItems();
 }

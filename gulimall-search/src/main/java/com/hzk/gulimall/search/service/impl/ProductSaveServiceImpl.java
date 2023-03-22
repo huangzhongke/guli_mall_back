@@ -1,7 +1,7 @@
 package com.hzk.gulimall.search.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hzk.common.es.SkuEsModel;
+import com.hzk.common.to.es.SkuEsModel;
 import com.hzk.gulimall.search.config.GulimallElasticSearchConfig;
 import com.hzk.gulimall.search.constant.EsConstant;
 import com.hzk.gulimall.search.service.ProductSavaService;

@@ -19,6 +19,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -153,8 +154,8 @@ public class CartServiceImpl implements CartService {
     public void checkItem(Long skuId, Integer check) {
         BoundHashOperations<String, Object, Object> cartOps = getCartOps();
         CartItemVo cartItem = getCartItem(skuId);
-        cartItem.setCheck(check == 1? true : false);
-        cartOps.put(skuId.toString(),JSONObject.toJSONString(cartItem));
+        cartItem.setCheck(check == 1 ? true : false);
+        cartOps.put(skuId.toString(), JSONObject.toJSONString(cartItem));
     }
 
     @Override
@@ -162,13 +163,33 @@ public class CartServiceImpl implements CartService {
         BoundHashOperations<String, Object, Object> cartOps = getCartOps();
         CartItemVo cartItem = getCartItem(skuId);
         cartItem.setCount(count);
-        cartOps.put(skuId.toString(),JSONObject.toJSONString(cartItem));
+        cartOps.put(skuId.toString(), JSONObject.toJSONString(cartItem));
     }
 
     @Override
     public void deleteItem(Long skuId) {
         BoundHashOperations<String, Object, Object> cartOps = getCartOps();
         cartOps.delete(skuId.toString());
+    }
+
+    @Override
+    public List<CartItemVo> getCurrentUserCartItems() {
+        ThreadLocal<UserInfoTo> threadLocal = CartInterceptor.threadLocal;
+        UserInfoTo userInfoTo = threadLocal.get();
+        if (userInfoTo.getUserId() == null){
+            return null;
+        }else {
+            String cartKey = CartConstant.CART_PREFIX + userInfoTo.getUserId();
+            List<CartItemVo> cartItems = getCartItems(cartKey).stream()
+                    .filter(item->item.getCheck()).map(item -> {
+                //由于考虑到时间变化 购物车中存放的商品价格也会发生变化需要远程调用更新价格
+                BigDecimal price = productFeignService.getPrice(item.getSkuId());
+                item.setPrice(price);
+                return item;
+            }).collect(Collectors.toList());
+            return cartItems;
+
+        }
     }
 
     /**

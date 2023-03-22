@@ -1,4 +1,4 @@
-package com.hzk.common.es;
+package com.hzk.common.to.es;
 
 import lombok.Data;
 

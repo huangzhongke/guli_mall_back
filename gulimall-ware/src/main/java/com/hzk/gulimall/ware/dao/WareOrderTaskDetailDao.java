@@ -1,7 +1,7 @@
 package com.hzk.gulimall.ware.dao;
 
-import com.hzk.gulimall.ware.entity.WareOrderTaskDetailEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hzk.gulimall.ware.entity.WareOrderTaskDetailEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,5 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface WareOrderTaskDetailDao extends BaseMapper<WareOrderTaskDetailEntity> {
-	
+
+    //void updateLockStatus(@Param("skuId") Long skuId, @Param("wareId") Long wareId, @Param("taskId") Long taskId);
+
 }
