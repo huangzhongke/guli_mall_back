@@ -1,0 +1,86 @@
+{
+  "groups": [
+    {
+      "name": "alipay",
+      "type": "com.hzk.gulimall.order.config.AlipayTemplate",
+      "sourceType": "com.hzk.gulimall.order.config.AlipayTemplate"
+    },
+    {
+      "name": "gulimall.thread",
+      "type": "com.hzk.gulimall.order.config.ThreadPoolConfigProperties",
+      "sourceType": "com.hzk.gulimall.order.config.ThreadPoolConfigProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "alipay.alipay-public-key",
+      "type": "java.lang.String",
+      "sourceType": "com.hzk.gulimall.order.config.AlipayTemplate",
+      "defaultValue": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArp0TJJxhfNByNNVjvl0FUnuHe\/+mYuLrMwcnU7iIB3d94ZThtAdgpawjHkfxF6eL6gLShpSpeGE5PCgcwpSW\/OaOUbRw2k\/Sd\/1k0PYjh6GFEo2yUSz1jdMf1n2V6SoRVAzys9k3a8BZOzpw65P3DD\/jYj0jx303JLdJvKyH9vEYJiM0+hXwpCgVVmqgxV1D0SmVpgtdhJMX6B5u8GDLbG5LfDrHK\/r1tBlBbkK3xqaadY\/DMktR7o\/yf5QAhEm4SFmyIdU8N1JwuZyXK5lcUyzp1voW\/lg8lsRomFZ1TmdWlHjenDLgkEnqgV9fQZx1Qx9bF34Irfx3QIXZaBh9\/QIDAQAB"
+    },
+    {
+      "name": "alipay.app-id",
+      "type": "java.lang.String",
+      "sourceType": "com.hzk.gulimall.order.config.AlipayTemplate",
+      "defaultValue": "2021000122669322"
+    },
+    {
+      "name": "alipay.charset",
+      "type": "java.lang.String",
+      "sourceType": "com.hzk.gulimall.order.config.AlipayTemplate",
+      "defaultValue": "utf-8"
+    },
+    {
+      "name": "alipay.gateway-url",
+      "type": "java.lang.String",
+      "sourceType": "com.hzk.gulimall.order.config.AlipayTemplate",
+      "defaultValue": "https:\/\/openapi.alipaydev.com\/gateway.do"
+    },
+    {
+      "name": "alipay.merchant-private-key",
+      "type": "java.lang.String",
+      "sourceType": "com.hzk.gulimall.order.config.AlipayTemplate",
+      "defaultValue": "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCscQfReAbdLmJshICoWB6xB30nh9UlsGrVH5GHOgCEOMrU64b6AoGL+z00ndVqj3c0mWQ+\/8aH5CpMggsWEKXjps1wNgT96oK0XHdTk\/YVmatjzoKVdHrKmyQZPIcHKVHpgsRYGRUaugX46qkhaADUR373dE7zPvc7GE\/lgxOz3UIy8Rrlz1WtvxK0mA9wN7y8VC5mFIlm36GR3BEqsJhYhQB+JvAWXzgJKmsiJLwHcgU7WHUE9d2OvGmb2jruFFXeoYcV8rkYrW8rNTcFJeYxRS+C8QlFf69zyHZk47KdWBEFXxpZ1afPLg85Ew0MPyUOEOY0lecjWBejHNb2UQyNAgMBAAECggEAf7lgzxgWDXGz2Sjzmr1aTkl7u\/HyQG5BUwaE5iJiC419PuQNH9UHW0WF+hkF4F3PL5iGFduhkzm+0thnmbpPBSWheQGqBODUWv86Kx+m4CzoM47cThLueG8c98xLP1StpUYEZDR\/20H59nrpNyMvqgwi0OrHJ4h12sGRPDAwQcHgr5IijyogL+r1UYxCAuWX+2QG4lhUa0Cvf5VpOSb1JbS2eeByH+nIJfzVOxdfXjnaqQJgqOQLVbGdTMF\/ovuLo2IaU01yyCuGTkvNT5HsM\/OFxWKWncIcto5Gc6MZccTFluXGHdwdzqvu3f0GB7vPqtBb659sXyvU7mfua1EfwQKBgQDv4\/hWOO4yrTQxtXG+GveOCRLeBpAkLkfpfVh6x2Z4\/x5LY+XuDrsKujo3xwwUQKhxKDj5df0Os4N1HoOHlRGy3uqXlXuHCOZE39fok\/3WIZWrULf5HdPizzSWC\/NPyi8qBVbOdUxcgUHYr\/t1jAiYywtdZnSom8kMUl9mlRrMSQKBgQC4BYZTk9NKi3Kqa7\/p6HRjZALe9AKNAjmDyKwV+pKE9gMge\/Y0XxosG23pH1oJjfjGK8x\/Aurnt+THu\/yszkA1y4bO\/J9JUi8RGOIc50Wudx3TBh8jHh8n2BubkTO8sjKOh2SHkqIakgpOw4FSDTluOBK3CQfraVwphbn26ElWJQKBgHaqe7cTNGlnGpGYYuqaZmkhfe7MqlLrffE3ayRZLQyfjrnWcfAf41B8LL5YvVXrYiePsRdd0U+LZ3TxIjlYeUfVU5CmhlOXCGl7nU9UndVmCaaUKF2X7q+ctjOfN735kvkjaPx6M8ryucLZ0vcjzUDf+AA85WpencZ1nPGewoHZAoGBALPvowMCHq5bYEnHhiZfx76PwkbjbcMXk8mKZMow8yfTrgcLbxiSjXLndzdmEpIZIlIT7aeb4LmnFKtA47bNDfgMBMtMNSxqkd8z55S\/h2Eq1BzNdZDPGUPKimQ5PM+bpte7B8+Qz7UPa8jMXh0vFSLy7UnQKNBFe3qWadpGE7+JAoGBAOjnEGf4brqs+Eal9CVz56\/2d2UwGL\/JdV3kIKwxYKvxy0nXRiGVfML\/yM2pA6aZSwBUCDoJRSfz2EmyxZfyUxTuTjS5F5clGZBn20PHA5fXw9IcedzunRmEMcqI75vg+kKkfASl6\/hMBI+CunHnYTVtCvFUIMlVxROvJLHfuyl1"
+    },
+    {
+      "name": "alipay.notify-url",
+      "type": "java.lang.String",
+      "sourceType": "com.hzk.gulimall.order.config.AlipayTemplate",
+      "defaultValue": " https:\/\/7e1476e263.zicp.fun\/payed\/notify"
+    },
+    {
+      "name": "alipay.return-url",
+      "type": "java.lang.String",
+      "sourceType": "com.hzk.gulimall.order.config.AlipayTemplate",
+      "defaultValue": "http:\/\/member.gulimall.com\/memberOrder.html"
+    },
+    {
+      "name": "alipay.sign-type",
+      "type": "java.lang.String",
+      "sourceType": "com.hzk.gulimall.order.config.AlipayTemplate",
+      "defaultValue": "RSA2"
+    },
+    {
+      "name": "alipay.timeout",
+      "type": "java.lang.String",
+      "sourceType": "com.hzk.gulimall.order.config.AlipayTemplate",
+      "defaultValue": "30m"
+    },
+    {
+      "name": "gulimall.thread.core-size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.hzk.gulimall.order.config.ThreadPoolConfigProperties"
+    },
+    {
+      "name": "gulimall.thread.keep-alive-time",
+      "type": "java.lang.Integer",
+      "sourceType": "com.hzk.gulimall.order.config.ThreadPoolConfigProperties"
+    },
+    {
+      "name": "gulimall.thread.max-size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.hzk.gulimall.order.config.ThreadPoolConfigProperties"
+    }
+  ],
+  "hints": []
+}

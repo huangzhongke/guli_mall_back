@@ -1,12 +1,15 @@
 package com.hzk.gulimall.order.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单
@@ -188,6 +191,10 @@ public class OrderEntity implements Serializable {
 	/**
 	 * 修改时间
 	 */
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date modifyTime;
+
+	@TableField(exist = false)
+	private List<OrderItemEntity> orderItemEntityList;
 
 }

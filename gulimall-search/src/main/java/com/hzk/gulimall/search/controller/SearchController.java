@@ -1,5 +1,6 @@
 package com.hzk.gulimall.search.controller;
 
+import com.hzk.gulimall.search.feign.CartFeignService;
 import com.hzk.gulimall.search.service.MallSearchService;
 import com.hzk.gulimall.search.vo.SearchParam;
 import com.hzk.gulimall.search.vo.SearchResult;
@@ -20,11 +21,14 @@ import javax.servlet.http.HttpServletRequest;
 public class SearchController {
     @Autowired
     MallSearchService mallSearchService;
-
+    @Autowired
+    CartFeignService cartFeignService;
     @GetMapping("/list.html")
     public String listPage(SearchParam searchParam, Model model, HttpServletRequest request) {
         searchParam.set_queryString(request.getQueryString());
         SearchResult result = mallSearchService.search(searchParam);
+        String cartItemsCount = cartFeignService.getCartItemsCount();
+        model.addAttribute("cartItemsCount",cartItemsCount);
         model.addAttribute("result", result);
         return "list";
     }

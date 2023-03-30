@@ -6,10 +6,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hzk.common.utils.PageUtils;
 import com.hzk.common.utils.Query;
 import com.hzk.gulimall.ware.dao.WareOrderTaskDao;
+import com.hzk.gulimall.ware.entity.WareOrderTaskDetailEntity;
 import com.hzk.gulimall.ware.entity.WareOrderTaskEntity;
 import com.hzk.gulimall.ware.service.WareOrderTaskService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -31,5 +33,7 @@ public class WareOrderTaskServiceImpl extends ServiceImpl<WareOrderTaskDao, Ware
 
         return this.getOne(new QueryWrapper<WareOrderTaskEntity>().lambda().eq(WareOrderTaskEntity::getOrderSn,orderSn));
     }
+
+
 
 }

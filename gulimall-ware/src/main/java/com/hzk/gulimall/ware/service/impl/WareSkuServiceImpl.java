@@ -14,6 +14,7 @@ import com.hzk.common.to.mq.StockLockedTo;
 import com.hzk.common.utils.PageUtils;
 import com.hzk.common.utils.Query;
 import com.hzk.common.utils.R;
+import com.hzk.gulimall.ware.constant.LockStatus;
 import com.hzk.gulimall.ware.dao.WareOrderTaskDetailDao;
 import com.hzk.gulimall.ware.dao.WareSkuDao;
 import com.hzk.gulimall.ware.entity.WareOrderTaskDetailEntity;
@@ -156,7 +157,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
             OrderVo orderVo = r.getData(new TypeReference<OrderVo>() {
             });
             if (orderVo == null || orderVo.getStatus() == 4) {
-                if (taskDetailEntity.getLockStatus() == 1) {
+                if (taskDetailEntity.getLockStatus() == LockStatus.LOCKED) {
                     //回滚库存
                     unLockStock(taskDetailEntity.getSkuId(), taskDetailEntity.getWareId(), taskDetailEntity.getSkuNum(), taskDetailId);
                 }
@@ -168,7 +169,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         wareSkuDao.unLockStock(skuId, wareId, num);
         WareOrderTaskDetailEntity entity = new WareOrderTaskDetailEntity();
         entity.setId(detailId);
-        entity.setLockStatus(2);
+        entity.setLockStatus(LockStatus.RELEASED);
         wareOrderTaskDetailService.updateById(entity);
 
     }
@@ -233,14 +234,31 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
     public void unlockStock(OrderTo orderTo) {
         String orderSn = orderTo.getOrderSn();
         WareOrderTaskEntity wareOrderTaskEntity = wareOrderTaskService.getOrderTaskByOrderSn(orderSn);
+
         List<WareOrderTaskDetailEntity> list = wareOrderTaskDetailService.list(new QueryWrapper<WareOrderTaskDetailEntity>().lambda()
                 .eq(WareOrderTaskDetailEntity::getTaskId, wareOrderTaskEntity.getId())
-                .eq(WareOrderTaskDetailEntity::getLockStatus, 1));
+                .eq(WareOrderTaskDetailEntity::getLockStatus, LockStatus.LOCKED));
         for (WareOrderTaskDetailEntity entity : list) {
             unLockStock(entity.getSkuId(),entity.getWareId(),entity.getSkuNum(),entity.getId());
         }
 
 
+    }
+    @Transactional
+    @Override
+    public void orderStockMinus(String orderSn) {
+        WareOrderTaskEntity orderTask = wareOrderTaskService.getOrderTaskByOrderSn(orderSn);
+        List<WareOrderTaskDetailEntity> list = wareOrderTaskDetailService.list(new QueryWrapper<WareOrderTaskDetailEntity>().lambda()
+                .eq(WareOrderTaskDetailEntity::getTaskId, orderTask.getId())
+                .eq(WareOrderTaskDetailEntity::getLockStatus, LockStatus.LOCKED));
+        for (WareOrderTaskDetailEntity entity : list) {
+            //修改taskDetail的lock_status状态置为3
+            WareOrderTaskDetailEntity detail = new WareOrderTaskDetailEntity();
+            detail.setId(entity.getId());
+            detail.setLockStatus(LockStatus.FINISH);
+            wareOrderTaskDetailService.updateById(detail);
+            wareSkuDao.minusStock(entity.getSkuId(),entity.getSkuNum(),entity.getWareId());
+        }
     }
 
     @Data

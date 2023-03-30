@@ -15,7 +15,13 @@
         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
     </properties>
 
-   <dependencies>
+    <dependencies>
+        <!-- 支付依赖      -->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>4.35.83.ALL</version>
+        </dependency>
         <dependency>
             <groupId>com.hzk.gulimall</groupId>
             <artifactId>gulimall-common</artifactId>
@@ -27,10 +33,10 @@
                 </exclusion>
             </exclusions>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-aop</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-aop</artifactId>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
@@ -63,7 +69,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-       <!-- 消息队列 -->
+        <!-- 消息队列 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
@@ -99,7 +105,7 @@
             <version>2.0.3</version>
             <scope>compile</scope>
         </dependency>
-   </dependencies>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>

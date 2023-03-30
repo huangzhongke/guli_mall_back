@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <option name="BUILD_PROCESS_ADDITIONAL_VM_OPTIONS" value="-Djps.track.ap.dependencies=false" />
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="gulimall-coupon" />
+        <module name="gulimall-cart" />
+        <module name="gulimall-third-part" />
+        <module name="gulimall-common" />
+        <module name="gulimall-auth-server" />
+        <module name="gulimall-order" />
+        <module name="gulimall-product" />
+        <module name="renren-generator" />
+        <module name="gulimall-test-sso-client" />
+        <module name="gulimall-test-sso-server" />
+        <module name="renren-fast" />
+        <module name="gulimall-search" />
+        <module name="gulimall-getway" />
+        <module name="gulimall-member" />
+        <module name="gulimall-ware" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="gulimall-test-sso-client2" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="gulimall-cart" options="" />
+      <module name="gulimall-search" options="-parameters" />
+      <module name="gulimall-test-sso-client" options="" />
+      <module name="gulimall-test-sso-client2" options="" />
+      <module name="gulimall-test-sso-server" options="" />
+      <module name="renren-fast" options="-parameters" />
+      <module name="renren-generator" options="-parameters" />
+    </option>
+  </component>
+</project>

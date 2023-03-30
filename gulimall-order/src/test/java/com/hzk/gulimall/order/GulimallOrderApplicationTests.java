@@ -1,7 +1,10 @@
 package com.hzk.gulimall.order;
 
+import com.hzk.common.utils.HttpUtils;
 import com.hzk.gulimall.order.entity.OrderReturnReasonEntity;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -12,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @SpringBootTest
@@ -22,7 +27,14 @@ class GulimallOrderApplicationTests {
 
     @Autowired
     RabbitTemplate rabbitTemplate;
-
+    @Test
+    void sendPost() throws Exception {
+        Map<String, String> params =new HashMap<>();
+        params.put("name","hello");
+        HttpResponse post = HttpUtils.post("https://d3fc-125-115-204-247.ap.ngrok.io/payed/notify", null, params);
+        String s = EntityUtils.toString(post.getEntity());
+        System.out.println(s);
+    }
     @Test
     void sendTextMessage() {
         OrderReturnReasonEntity entity = new OrderReturnReasonEntity();

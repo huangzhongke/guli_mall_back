@@ -25,4 +25,7 @@ public interface WmsFeignService {
 
     @PostMapping("/ware/waresku/lock/order")
     R orderStockLock(@RequestBody WareSkuLockVo vo);
+
+    @GetMapping("/ware/waresku/order/finish")
+    R orderStockMinus(@RequestParam("orderSn") String orderSn);
 }

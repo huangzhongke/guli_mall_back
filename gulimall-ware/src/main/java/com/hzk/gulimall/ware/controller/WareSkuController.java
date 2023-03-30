@@ -29,6 +29,12 @@ public class WareSkuController {
     @Autowired
     private WareSkuService wareSkuService;
 
+    @GetMapping("/order/finish")
+    public R orderStockMinus(@RequestParam("orderSn") String orderSn){
+        wareSkuService.orderStockMinus(orderSn);
+        return R.ok();
+    }
+
     @PostMapping("/lock/order")
     public R orderStockLock(@RequestBody WareSkuLockVo vo){
         try {

@@ -2,8 +2,10 @@ package com.hzk.gulimall.ware.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hzk.common.utils.PageUtils;
+import com.hzk.gulimall.ware.entity.WareOrderTaskDetailEntity;
 import com.hzk.gulimall.ware.entity.WareOrderTaskEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,5 +20,7 @@ public interface WareOrderTaskService extends IService<WareOrderTaskEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     WareOrderTaskEntity getOrderTaskByOrderSn(String orderSn);
+
+
 }
 

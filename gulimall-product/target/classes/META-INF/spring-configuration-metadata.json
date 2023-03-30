@@ -1,0 +1,27 @@
+{
+  "groups": [
+    {
+      "name": "gulimall.thread",
+      "type": "com.hzk.gulimall.product.config.ThreadPoolConfigProperties",
+      "sourceType": "com.hzk.gulimall.product.config.ThreadPoolConfigProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "gulimall.thread.core-size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.hzk.gulimall.product.config.ThreadPoolConfigProperties"
+    },
+    {
+      "name": "gulimall.thread.keep-alive-time",
+      "type": "java.lang.Integer",
+      "sourceType": "com.hzk.gulimall.product.config.ThreadPoolConfigProperties"
+    },
+    {
+      "name": "gulimall.thread.max-size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.hzk.gulimall.product.config.ThreadPoolConfigProperties"
+    }
+  ],
+  "hints": []
+}
