@@ -13,6 +13,8 @@ public class RabbitMqConstant {
     public static final String ORDER_CREATE_ORDER_ROUTING_KEY="order.create.order";
     public static final String ORDER_RELEASE_ORDER_ROUTING_KEY="order.release.order";
     public static final String ORDER_RELEASE_OTHER_ROUTING_KEY="order.release.other.#";
+    public static final String ORDER_SECKILL_ORDER_QUEUE="order.seckill.order.queue";
+    public static final String ORDER_SECKILL_ORDER_ROUTING_KEY="order.seckill.order";
 
     public static final String STOCK_RELEASE_STOCK_QUEUE="stock.release.stock.queue";
     public static final String STOCK_DELAY_QUEUE="stock.delay.queue";

@@ -20,6 +20,7 @@ public class SkuItemVo {
     private List<SkuItemSaleAttrVo> saleAttr;
     private SpuInfoDescEntity desc;
     private List<SpuItemAttrGroupVo> groupAttrs;
+    private SeckillSkuVo seckillSkuVo;
     private boolean hasStock = true;
     @Data
     public static class SkuItemSaleAttrVo {

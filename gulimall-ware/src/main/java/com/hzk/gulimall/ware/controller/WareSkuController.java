@@ -7,6 +7,7 @@ import com.hzk.common.utils.PageUtils;
 import com.hzk.common.utils.R;
 import com.hzk.gulimall.ware.entity.WareSkuEntity;
 import com.hzk.gulimall.ware.service.WareSkuService;
+import com.hzk.gulimall.ware.vo.SeckillSkuLockVo;
 import com.hzk.gulimall.ware.vo.WareSkuLockVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,24 +31,35 @@ public class WareSkuController {
     private WareSkuService wareSkuService;
 
     @GetMapping("/order/finish")
-    public R orderStockMinus(@RequestParam("orderSn") String orderSn){
+    public R orderStockMinus(@RequestParam("orderSn") String orderSn) {
         wareSkuService.orderStockMinus(orderSn);
         return R.ok();
     }
 
+
     @PostMapping("/lock/order")
-    public R orderStockLock(@RequestBody WareSkuLockVo vo){
+    public R orderStockLock(@RequestBody WareSkuLockVo vo) {
         try {
             Boolean hasStock = wareSkuService.orderStockLock(vo);
             return R.ok().setData(hasStock);
         } catch (NoStockException e) {
-            return R.error(BizCodeEnum.NO_STOCK_EXCEPTION.getCode(),BizCodeEnum.NO_STOCK_EXCEPTION.getMsg());
+            return R.error(BizCodeEnum.NO_STOCK_EXCEPTION.getCode(), BizCodeEnum.NO_STOCK_EXCEPTION.getMsg());
+        }
+    }
+
+    @PostMapping("/lock/seckill")
+    public R seckillSkuLock(@RequestBody SeckillSkuLockVo vo) {
+        try {
+            wareSkuService.seckillSkuLock(vo);
+            return R.ok();
+        } catch (NoStockException e) {
+            return R.error(BizCodeEnum.NO_STOCK_EXCEPTION.getCode(), BizCodeEnum.NO_STOCK_EXCEPTION.getMsg());
         }
     }
 
     @PostMapping("/hasstock")
     public R getSkuHasStock(@RequestBody List<Long> skuIds) {
-       List<SkuHasStockVo> vo = wareSkuService.getSkuHasStock(skuIds);
+        List<SkuHasStockVo> vo = wareSkuService.getSkuHasStock(skuIds);
         R ok = R.ok();
         ok.setData(vo);
         return ok;

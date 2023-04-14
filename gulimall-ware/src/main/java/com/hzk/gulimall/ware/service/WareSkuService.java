@@ -6,6 +6,7 @@ import com.hzk.common.to.SkuHasStockVo;
 import com.hzk.common.to.mq.StockLockedTo;
 import com.hzk.common.utils.PageUtils;
 import com.hzk.gulimall.ware.entity.WareSkuEntity;
+import com.hzk.gulimall.ware.vo.SeckillSkuLockVo;
 import com.hzk.gulimall.ware.vo.WareSkuLockVo;
 
 import java.util.List;
@@ -35,5 +36,7 @@ public interface WareSkuService extends IService<WareSkuEntity> {
     void unlockStock(OrderTo orderTo);
 
     void orderStockMinus(String orderSn);
+
+    void seckillSkuLock(SeckillSkuLockVo vo);
 }
 

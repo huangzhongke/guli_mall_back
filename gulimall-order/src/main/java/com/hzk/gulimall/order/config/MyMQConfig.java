@@ -94,4 +94,20 @@ public class MyMQConfig {
                 null);
         return binding;
     }
+
+    @Bean
+    public Queue orderSeckillOrderQueue(){
+        Queue queue = new Queue(RabbitMqConstant.ORDER_SECKILL_ORDER_QUEUE,true, false, false, null);
+        return queue;
+    }
+
+    @Bean
+    public Binding orderSeckillOrderQueueBinding(){
+        Binding binding = new Binding(RabbitMqConstant.ORDER_SECKILL_ORDER_QUEUE,
+                Binding.DestinationType.QUEUE,
+                RabbitMqConstant.ORDER_EVENT_EXCHANGE,
+                RabbitMqConstant.ORDER_SECKILL_ORDER_ROUTING_KEY,
+                null);
+        return binding;
+    }
 }

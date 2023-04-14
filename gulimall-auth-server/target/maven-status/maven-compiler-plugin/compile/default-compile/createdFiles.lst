@@ -1,0 +1,14 @@
+com\hzk\gulimall\auth\config\GulimallSessionConfig.class
+com\hzk\gulimall\auth\controller\LoginController$1.class
+com\hzk\gulimall\auth\vo\UserRegisterVo.class
+com\hzk\gulimall\auth\controller\LoginController$2.class
+com\hzk\gulimall\auth\controller\OAuth2Controller.class
+com\hzk\gulimall\auth\feign\ThirdPartFeignService.class
+com\hzk\gulimall\auth\controller\LoginController.class
+com\hzk\gulimall\auth\config\GulimallWebConfig.class
+com\hzk\gulimall\auth\controller\OAuth2Controller$1.class
+com\hzk\gulimall\auth\controller\LoginController$3.class
+com\hzk\gulimall\auth\vo\SocialUser.class
+com\hzk\gulimall\auth\GulimallAuthServerApplication.class
+com\hzk\gulimall\auth\vo\UserLoginVo.class
+com\hzk\gulimall\auth\feign\MemberFeignService.class

@@ -1,21 +1,29 @@
 package com.hzk.gulimall.coupon;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
-@SpringBootTest
+//@SpringBootTest
 class GulimallCouponApplicationTests {
 
     @Test
     void contextLoads() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("name", "jack");
-        map.forEach((key, value) -> {
-            System.out.println(key + ":" + value);
-        });
+        LocalDate now = LocalDate.now();
+        LocalTime min = LocalTime.MIN;
+        LocalDateTime startDate = LocalDateTime.of(now, min);
+        String start = startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        LocalDate now1 = LocalDate.now();
+        LocalDate localDate = now1.plusDays(2);
+        LocalTime MAX = LocalTime.MAX;
+        LocalDateTime endDate = LocalDateTime.of(localDate, MAX);
+        String end = endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        System.out.println(start);
+        System.out.println(end);
     }
 
 }

@@ -27,6 +27,7 @@ import com.hzk.gulimall.ware.service.WareOrderTaskService;
 import com.hzk.gulimall.ware.service.WareSkuService;
 import com.hzk.gulimall.ware.vo.OrderItemVo;
 import com.hzk.gulimall.ware.vo.OrderVo;
+import com.hzk.gulimall.ware.vo.SeckillSkuLockVo;
 import com.hzk.gulimall.ware.vo.WareSkuLockVo;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
@@ -164,6 +165,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
             }
         }
     }
+
     @Transactional
     public void unLockStock(Long skuId, Long wareId, Integer num, Long detailId) {
         wareSkuDao.unLockStock(skuId, wareId, num);
@@ -228,6 +230,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
     /**
      * 当订单服务网络延迟 或者卡顿,造成库存解锁消息接收到发现订单状态还是已创建状态，那么这时候库存将永远不会解锁
      * 所以当订单关闭之后要在发一条消息给库存解锁服务让库存进行解锁
+     *
      * @param orderTo
      */
     @Override
@@ -239,11 +242,12 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
                 .eq(WareOrderTaskDetailEntity::getTaskId, wareOrderTaskEntity.getId())
                 .eq(WareOrderTaskDetailEntity::getLockStatus, LockStatus.LOCKED));
         for (WareOrderTaskDetailEntity entity : list) {
-            unLockStock(entity.getSkuId(),entity.getWareId(),entity.getSkuNum(),entity.getId());
+            unLockStock(entity.getSkuId(), entity.getWareId(), entity.getSkuNum(), entity.getId());
         }
 
 
     }
+
     @Transactional
     @Override
     public void orderStockMinus(String orderSn) {
@@ -257,7 +261,31 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
             detail.setId(entity.getId());
             detail.setLockStatus(LockStatus.FINISH);
             wareOrderTaskDetailService.updateById(detail);
-            wareSkuDao.minusStock(entity.getSkuId(),entity.getSkuNum(),entity.getWareId());
+            wareSkuDao.minusStock(entity.getSkuId(), entity.getSkuNum(), entity.getWareId());
+        }
+    }
+    @Deprecated
+    @Override
+    public void seckillSkuLock(SeckillSkuLockVo vo) {
+        //TODO 锁定秒杀商品库存
+        List<Long> wareIds = wareSkuDao.listWareHasSkuStock(vo.getSkuId());
+        if (wareIds != null && wareIds.size() > 0) {
+            for (Long wareId : wareIds) {
+                boolean stockFlag = false;
+                //锁定库存
+                Long count = wareSkuDao.lockSkuStock(vo.getSkuId(), wareId, vo.getNum());
+                if (count == 1L) {
+                    //表示锁定成功
+                    stockFlag = true;
+                    //rabbitTemplate.convertAndSend(RabbitMqConstant.STOCK_EVENT_EXCHANGE, RabbitMqConstant.STOCK_LOCKED_ROUTING_KEY, stockLockedTo);
+                    break;
+                }
+                if (!stockFlag) {
+                    //如果没锁住
+                    throw new NoStockException(vo.getSkuId());
+                }
+            }
+
         }
     }
 

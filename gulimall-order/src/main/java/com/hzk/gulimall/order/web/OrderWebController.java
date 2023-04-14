@@ -62,9 +62,4 @@ public class OrderWebController {
 
     }
 
-    @GetMapping("/orderList.html")
-    public String orderList(Model model,RedirectAttributes redirectAttributes){
-
-        return "list.html";
-    }
 }

@@ -13,8 +13,10 @@ import com.hzk.gulimall.product.dao.SkuInfoDao;
 import com.hzk.gulimall.product.entity.SkuImagesEntity;
 import com.hzk.gulimall.product.entity.SkuInfoEntity;
 import com.hzk.gulimall.product.entity.SpuInfoDescEntity;
+import com.hzk.gulimall.product.feign.SeckillFeignService;
 import com.hzk.gulimall.product.feign.WareFeignService;
 import com.hzk.gulimall.product.service.*;
+import com.hzk.gulimall.product.vo.SeckillSkuVo;
 import com.hzk.gulimall.product.vo.SkuItemVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +49,9 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
 
     @Autowired
     WareFeignService wareFeignService;
+
+    @Autowired
+    SeckillFeignService seckillFeignService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -143,6 +148,16 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
             skuItemVo.setImages(images);
         }, executor);
 
+        CompletableFuture<Void> seckillFuture = CompletableFuture.runAsync(() -> {
+            R r = seckillFeignService.getSkuSeckillInfo(skuId);
+            if (r.getCode() == 0) {
+                SeckillSkuVo seckillSkuVo = r.getData(new TypeReference<SeckillSkuVo>() {
+                });
+                skuItemVo.setSeckillSkuVo(seckillSkuVo);
+            }
+        }, executor);
+
+
         CompletableFuture<Void> stockFuture = CompletableFuture.runAsync(() -> {
             R r = wareFeignService.getSkuHasStock(Arrays.asList(skuId));
             if (r.getCode() == 0){
@@ -153,7 +168,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
             }
         }, executor);
         try {
-            CompletableFuture.allOf(descFuture,baseAttrFuture,saleAttrFuture,imageFuture,stockFuture).get();
+            CompletableFuture.allOf(descFuture,baseAttrFuture,saleAttrFuture,imageFuture,stockFuture,seckillFuture).get();
         } catch (Exception e) {
             e.printStackTrace();
         }

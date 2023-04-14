@@ -1,0 +1,7 @@
+com\example\thirdpart\controller\OSSController.class
+com\example\thirdpart\utils\HttpUtils.class
+com\example\thirdpart\component\SmsComponent.class
+com\example\thirdpart\utils\HttpUtils$1.class
+com\example\thirdpart\controller\SmsSendController.class
+com\example\thirdpart\GulimallThirdPartApplication.class
+META-INF\spring-configuration-metadata.json

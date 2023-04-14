@@ -1,0 +1,12 @@
+server:
+  port: 5000
+spring:
+  task:
+    execution:
+      pool:
+        core-size: 20
+        max-size: 50
+  session:
+    store-type: redis
+  redis:
+    host: 192.168.56.10

@@ -13,6 +13,7 @@ import com.hzk.common.utils.PageUtils;
 import com.hzk.common.utils.Query;
 import com.hzk.common.utils.R;
 import com.hzk.common.vo.MemberResponseVo;
+import com.hzk.common.vo.SeckillOrderTo;
 import com.hzk.gulimall.order.constant.OrderConstant;
 import com.hzk.gulimall.order.constant.PayConstant;
 import com.hzk.gulimall.order.dao.OrderDao;
@@ -223,6 +224,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         return baseMapper.selectOne(new QueryWrapper<OrderEntity>().lambda().eq(OrderEntity::getOrderSn,orderSn));
     }
 
+    /**
+     * 释放订单
+     * @param entity
+     */
     @Override
     public void closeOrder(OrderEntity entity) {
         //先查一遍
@@ -277,10 +282,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         return new PageUtils(page);
     }
 
-    @Override
-    public String asyncNotify(String notifyData) {
-        return null;
-    }
+
     /**
      * 处理支付宝的支付结果
      * @param asyncVo
@@ -315,6 +317,81 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
 
         return "success";
+    }
+
+    /**
+     * 创建秒杀订单
+     * @param to
+     */
+    @Override
+    public void createSeckillOrder(SeckillOrderTo to) {
+        OrderEntity orderEntity = new OrderEntity();
+
+        BigDecimal multiply = to.getSeckillPrice().multiply(new BigDecimal("" + to.getNum()));
+        orderEntity.setOrderSn(to.getOrderSn());
+        orderEntity.setStatus(OrderStatusEnum.CREATE_NEW.getCode());
+        orderEntity.setPayAmount(multiply);
+        orderEntity.setMemberId(to.getMemberId());
+        orderEntity.setTotalAmount(multiply);
+
+        OrderItemEntity orderItemEntity = new OrderItemEntity();
+        orderItemEntity.setOrderSn(to.getOrderSn());
+        orderItemEntity.setRealAmount(multiply);
+        orderItemEntity.setSkuId(to.getSkuId());
+        orderItemEntity.setSkuQuantity(to.getNum());
+
+        CompletableFuture<Void> itemFuture = CompletableFuture.runAsync(() -> {
+            R r = productFeignService.getSpuBySkuId(to.getSkuId());
+            if (r.getCode() == 0) {
+                SpuInfoVo spuInfoVo = r.getData(new TypeReference<SpuInfoVo>() {
+                });
+                orderItemEntity.setSpuName(spuInfoVo.getSpuName());
+                orderItemEntity.setSpuId(spuInfoVo.getId());
+                orderItemEntity.setSpuBrand(spuInfoVo.getBrandId().toString());
+
+            }
+        }, executor);
+        CompletableFuture<Void> skuFuture = CompletableFuture.runAsync(() -> {
+            R r = productFeignService.getSkuInfo(to.getSkuId());
+            if (r.getCode() == 0) {
+                SkuInfoVo skuInfoVo = r.getData("skuInfo",new TypeReference<SkuInfoVo>() {
+                });
+                orderItemEntity.setSpuPic(skuInfoVo.getSkuDefaultImg());
+                orderItemEntity.setCategoryId(skuInfoVo.getCatalogId());
+                orderItemEntity.setSkuName(skuInfoVo.getSkuName());
+                orderItemEntity.setSkuPrice(multiply);
+                orderItemEntity.setSkuPic(skuInfoVo.getSkuDefaultImg());
+
+            }
+        }, executor);
+        CompletableFuture<Void> saleAttrValuesFuture = CompletableFuture.runAsync(() -> {
+            List<String> saleAttrValues = productFeignService.getSkuSaleAttrValues(to.getSkuId());
+            String str = "";
+            for (String saleAttrValue : saleAttrValues) {
+                str = str + saleAttrValue + ";";
+            }
+            orderItemEntity.setSkuAttrsVals(str);
+        }, executor);
+        try {
+            CompletableFuture.allOf(itemFuture,skuFuture,saleAttrValuesFuture).get();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        orderService.save(orderEntity);
+        orderItemService.save(orderItemEntity);
+        //TODO 同时锁定秒杀库存
+
+        OrderItemVo orderItemVo = new OrderItemVo();
+        orderItemVo.setSkuId(to.getSkuId());
+        orderItemVo.setCount(to.getNum());
+        WareSkuLockVo wareSkuLockVo = new WareSkuLockVo();
+        wareSkuLockVo.setOrderSn(to.getOrderSn());
+        List<OrderItemVo> orderItemVos = Arrays.asList(orderItemVo);
+        wareSkuLockVo.setLocks(orderItemVos);
+
+        wmsFeignService.orderStockLock(wareSkuLockVo);
+
     }
 
 

@@ -1,0 +1,10 @@
+D:\guli_mall\guli_mall\gulimall-auth-server\src\main\java\com\hzk\gulimall\auth\config\GulimallSessionConfig.java
+D:\guli_mall\guli_mall\gulimall-auth-server\src\main\java\com\hzk\gulimall\auth\vo\UserRegisterVo.java
+D:\guli_mall\guli_mall\gulimall-auth-server\src\main\java\com\hzk\gulimall\auth\feign\ThirdPartFeignService.java
+D:\guli_mall\guli_mall\gulimall-auth-server\src\main\java\com\hzk\gulimall\auth\GulimallAuthServerApplication.java
+D:\guli_mall\guli_mall\gulimall-auth-server\src\main\java\com\hzk\gulimall\auth\feign\MemberFeignService.java
+D:\guli_mall\guli_mall\gulimall-auth-server\src\main\java\com\hzk\gulimall\auth\controller\OAuth2Controller.java
+D:\guli_mall\guli_mall\gulimall-auth-server\src\main\java\com\hzk\gulimall\auth\config\GulimallWebConfig.java
+D:\guli_mall\guli_mall\gulimall-auth-server\src\main\java\com\hzk\gulimall\auth\vo\SocialUser.java
+D:\guli_mall\guli_mall\gulimall-auth-server\src\main\java\com\hzk\gulimall\auth\controller\LoginController.java
+D:\guli_mall\guli_mall\gulimall-auth-server\src\main\java\com\hzk\gulimall\auth\vo\UserLoginVo.java
