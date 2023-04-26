@@ -62,6 +62,7 @@ D:\guli_mall\guli_mall\gulimall-order\src\main\java\com\hzk\gulimall\order\web\O
 D:\guli_mall\guli_mall\gulimall-order\src\main\java\com\hzk\gulimall\order\dao\OrderDao.java
 D:\guli_mall\guli_mall\gulimall-order\src\main\java\com\hzk\gulimall\order\service\impl\OrderReturnReasonServiceImpl.java
 D:\guli_mall\guli_mall\gulimall-order\src\main\java\com\hzk\gulimall\order\web\HelloController.java
+D:\guli_mall\guli_mall\gulimall-order\src\main\java\com\hzk\gulimall\order\vo\SkuInfoVo.java
 D:\guli_mall\guli_mall\gulimall-order\src\main\java\com\hzk\gulimall\order\entity\RefundInfoEntity.java
 D:\guli_mall\guli_mall\gulimall-order\src\main\java\com\hzk\gulimall\order\service\impl\OrderSettingServiceImpl.java
 D:\guli_mall\guli_mall\gulimall-order\src\main\java\com\hzk\gulimall\order\entity\OrderSettingEntity.java

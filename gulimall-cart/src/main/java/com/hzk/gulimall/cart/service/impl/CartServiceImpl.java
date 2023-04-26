@@ -192,6 +192,14 @@ public class CartServiceImpl implements CartService {
         }
     }
 
+    @Override
+    public void deleteCartItems(List<Long> skuIds) {
+        BoundHashOperations<String, Object, Object> cartOps = getCartOps();
+        for (Long skuId : skuIds) {
+            cartOps.delete(skuId.toString());
+        }
+    }
+
     /**
      * 根据临时用户的user-key 或者 用户的token获取对应的购物车数据
      *

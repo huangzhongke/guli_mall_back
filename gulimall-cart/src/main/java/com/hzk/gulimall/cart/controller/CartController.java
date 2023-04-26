@@ -1,5 +1,6 @@
 package com.hzk.gulimall.cart.controller;
 
+import com.hzk.common.utils.R;
 import com.hzk.gulimall.cart.service.CartService;
 import com.hzk.gulimall.cart.vo.CartItemVo;
 import com.hzk.gulimall.cart.vo.CartVo;
@@ -7,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -46,7 +45,12 @@ public class CartController {
     public List<CartItemVo> getCurrentUserCartItems(){
         return cartService.getCurrentUserCartItems();
     }
-
+    @ResponseBody
+    @PostMapping("/deleteCartItems")
+    public R deleteCartItems(@RequestBody List<Long> skuIds){
+        cartService.deleteCartItems(skuIds);
+        return R.ok();
+    }
     @GetMapping("/deleteItem")
     public String deleteItem(@RequestParam("skuId") Long skuId){
 

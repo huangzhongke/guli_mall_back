@@ -1,8 +1,9 @@
 package com.hzk.gulimall.order.feign;
 
+import com.hzk.common.utils.R;
 import com.hzk.gulimall.order.vo.OrderItemVo;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,4 +16,8 @@ import java.util.List;
 public interface CartFeignService {
     @GetMapping("/currentUserCartItems")
     List<OrderItemVo> getCurrentUserCartItems();
+
+    @ResponseBody
+    @PostMapping("/deleteCartItems")
+    R deleteCartItems(@RequestBody List<Long> skuIds);
 }

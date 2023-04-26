@@ -50,4 +50,6 @@ public interface CartService {
     void deleteItem(Long skuId);
 
     List<CartItemVo> getCurrentUserCartItems();
+
+    void deleteCartItems(List<Long> skuIds);
 }

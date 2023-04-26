@@ -21,6 +21,7 @@ com\hzk\gulimall\search\thread\ThreadTest.class
 com\hzk\gulimall\search\feign\ProductFeignService.class
 com\hzk\gulimall\search\GulimallSearchApplication.class
 com\hzk\gulimall\search\service\MallSearchService.class
+com\hzk\gulimall\search\config\SearchSentinelConfig.class
 com\hzk\gulimall\search\vo\SearchResult$CatalogVo.class
 com\hzk\gulimall\search\config\GulimallElasticSearchConfig.class
 com\hzk\gulimall\search\constant\EsConstant.class

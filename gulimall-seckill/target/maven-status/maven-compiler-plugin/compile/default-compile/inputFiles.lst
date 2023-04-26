@@ -1,3 +1,4 @@
+D:\guli_mall\guli_mall\gulimall-seckill\src\main\java\com\hzk\gulimall\seckill\config\SeckillSentinelConfig.java
 D:\guli_mall\guli_mall\gulimall-seckill\src\main\java\com\hzk\gulimall\seckill\vo\SkuInfoVo.java
 D:\guli_mall\guli_mall\gulimall-seckill\src\main\java\com\hzk\gulimall\seckill\GulimallSeckillApplication.java
 D:\guli_mall\guli_mall\gulimall-seckill\src\main\java\com\hzk\gulimall\seckill\to\SecKillSkuRedisTo.java
@@ -15,3 +16,5 @@ D:\guli_mall\guli_mall\gulimall-seckill\src\main\java\com\hzk\gulimall\seckill\v
 D:\guli_mall\guli_mall\gulimall-seckill\src\main\java\com\hzk\gulimall\seckill\config\ScheduleConfig.java
 D:\guli_mall\guli_mall\gulimall-seckill\src\main\java\com\hzk\gulimall\seckill\interceptor\LoginUserInterceptor.java
 D:\guli_mall\guli_mall\gulimall-seckill\src\main\java\com\hzk\gulimall\seckill\feign\ProductFeignService.java
+D:\guli_mall\guli_mall\gulimall-seckill\src\main\java\com\hzk\gulimall\seckill\feign\WmsFeignService.java
+D:\guli_mall\guli_mall\gulimall-seckill\src\main\java\com\hzk\gulimall\seckill\vo\SeckillSkuLockVo.java

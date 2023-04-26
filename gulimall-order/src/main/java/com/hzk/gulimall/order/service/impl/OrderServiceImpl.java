@@ -313,6 +313,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             this.baseMapper.updateOrderStatus(orderSn,OrderStatusEnum.PAYED.getCode(), PayConstant.ALIPAY);
             //TODO 远程调用库存系统扣减库存
             wmsFeignService.orderStockMinus(orderSn);
+            //TODO 因为这里是支付宝的异步回调所以远程调用删除购物车信息方法时，没有携带登录用户身份的信息
+            //List<OrderItemEntity> list = orderItemService.list(new QueryWrapper<OrderItemEntity>().lambda().eq(OrderItemEntity::getOrderSn, orderSn));
+            //List<Long> skuIds = list.stream().map(item -> {
+            //    return item.getSkuId();
+            //}).collect(Collectors.toList());
+            //R r = cartFeignService.deleteCartItems(skuIds);
         }
 
 

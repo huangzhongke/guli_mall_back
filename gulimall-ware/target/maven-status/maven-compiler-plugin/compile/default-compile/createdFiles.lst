@@ -17,6 +17,7 @@ com\hzk\gulimall\ware\service\impl\WareInfoServiceImpl$1.class
 com\hzk\gulimall\ware\config\MyRabbitMQConfig.class
 com\hzk\gulimall\ware\service\WareInfoService.class
 com\hzk\gulimall\ware\service\impl\PurchaseServiceImpl.class
+com\hzk\gulimall\ware\vo\SeckillSkuLockVo.class
 com\hzk\gulimall\ware\service\impl\WareSkuServiceImpl$SkuWareHasStock.class
 com\hzk\gulimall\ware\vo\MemberAddressVo.class
 com\hzk\gulimall\ware\vo\OrderVo.class

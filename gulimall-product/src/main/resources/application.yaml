@@ -55,10 +55,13 @@ mybatis-plus:
 #      logic-delete-value: 0
 logging:
   level:
-    com.hzk.gulimall: error
+    com.hzk.gulimall: info
 gulimall:
   thread:
     core-size: 20
     max-size: 200
     keep-alive-time: 10
+feign:
+  sentinel:
+    enabled: true
 #      logic-not-delete-value: 1

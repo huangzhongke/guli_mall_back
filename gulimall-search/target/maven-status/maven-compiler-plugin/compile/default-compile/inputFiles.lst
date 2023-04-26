@@ -3,6 +3,7 @@ D:\guli_mall\guli_mall\gulimall-search\src\main\java\com\hzk\gulimall\search\vo\
 D:\guli_mall\guli_mall\gulimall-search\src\main\java\com\hzk\gulimall\search\vo\SearchParam.java
 D:\guli_mall\guli_mall\gulimall-search\src\main\java\com\hzk\gulimall\search\constant\EsConstant.java
 D:\guli_mall\guli_mall\gulimall-search\src\main\java\com\hzk\gulimall\search\thread\ThreadTest.java
+D:\guli_mall\guli_mall\gulimall-search\src\main\java\com\hzk\gulimall\search\config\SearchSentinelConfig.java
 D:\guli_mall\guli_mall\gulimall-search\src\main\java\com\hzk\gulimall\search\GulimallSearchApplication.java
 D:\guli_mall\guli_mall\gulimall-search\src\main\java\com\hzk\gulimall\search\controller\ElasticSearchSavaController.java
 D:\guli_mall\guli_mall\gulimall-search\src\main\java\com\hzk\gulimall\search\service\impl\ProductSaveServiceImpl.java

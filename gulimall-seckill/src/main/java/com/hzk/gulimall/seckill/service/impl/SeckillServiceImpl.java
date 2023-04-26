@@ -1,5 +1,9 @@
 package com.hzk.gulimall.seckill.service.impl;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
@@ -14,6 +18,7 @@ import com.hzk.gulimall.seckill.service.SeckillService;
 import com.hzk.gulimall.seckill.to.SecKillSkuRedisTo;
 import com.hzk.gulimall.seckill.vo.SeckillSessionsWithSkusVo;
 import com.hzk.gulimall.seckill.vo.SkuInfoVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.redisson.api.RSemaphore;
 import org.redisson.api.RedissonClient;
@@ -37,6 +42,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @date 2023/3/30 16:57
  */
+@Slf4j
 @Service
 public class SeckillServiceImpl implements SeckillService {
     @Autowired
@@ -58,7 +64,6 @@ public class SeckillServiceImpl implements SeckillService {
     private static final String SKU_STOCK_SEMAPHORE = "seckill:stock:"; //后面跟商品随机码
 
     /**
-     *
      * 商家秒杀商品前查询库存系统 看是否满足秒杀商品的数量
      */
     @Override
@@ -74,32 +79,44 @@ public class SeckillServiceImpl implements SeckillService {
         }
     }
 
+    public static List<SecKillSkuRedisTo> blockHandler(BlockException e) {
+        log.error("getCurrentSeckillSkusResource资源限流");
+        return null;
+    }
+
+    @SentinelResource(value = "getCurrentSeckillSkusResource", blockHandler = "blockHandler")
     @Override
     public List<SecKillSkuRedisTo> getCurrentSeckillSkus() {
         //查出当前时间的秒杀场次
         long time = new Date().getTime();
-        Set<String> keys = redisTemplate.keys(SESSIONS_CACHE_PREFIX + "*");
-
-        for (String key : keys) {
-            String replace = key.replace(SESSIONS_CACHE_PREFIX, "");
-            String[] split = replace.split("_");
-            Long start = Long.parseLong(split[0]);
-            Long end = Long.parseLong(split[1]);
-            if (time >= start && time <= end) {
-                List<String> range = redisTemplate.opsForList().range(key, -100, 100);
-                BoundHashOperations<String, String, String> ops = redisTemplate.boundHashOps(SKUKILL_CACHE_PREFIX);
-                List<String> objects = ops.multiGet(range);
-                if (objects != null && objects.size() > 0) {
-                    List<SecKillSkuRedisTo> collect = objects.stream().map(item -> {
-                        SecKillSkuRedisTo redisTo = JSONObject.parseObject(item, SecKillSkuRedisTo.class);
-                        return redisTo;
-                    }).collect(Collectors.toList());
-                    return collect;
+        try (Entry entry = SphU.entry("seckillSkus")) {
+            Set<String> keys = redisTemplate.keys(SESSIONS_CACHE_PREFIX + "*");
+            for (String key : keys) {
+                String replace = key.replace(SESSIONS_CACHE_PREFIX, "");
+                String[] split = replace.split("_");
+                Long start = Long.parseLong(split[0]);
+                Long end = Long.parseLong(split[1]);
+                if (time >= start && time <= end) {
+                    List<String> range = redisTemplate.opsForList().range(key, -100, 100);
+                    BoundHashOperations<String, String, String> ops = redisTemplate.boundHashOps(SKUKILL_CACHE_PREFIX);
+                    List<String> objects = ops.multiGet(range);
+                    if (objects != null && objects.size() > 0) {
+                        List<SecKillSkuRedisTo> collect = objects.stream().map(item -> {
+                            SecKillSkuRedisTo redisTo = JSONObject.parseObject(item, SecKillSkuRedisTo.class);
+                            return redisTo;
+                        }).collect(Collectors.toList());
+                        return collect;
+                    }
+                    break;
                 }
-                break;
-            }
 
+            }
+        } catch (BlockException e) {
+            log.info("熔断 eckillSkus");
+            return null;
         }
+
+
         //返回该场次的所有商品信息
         return null;
     }
@@ -127,6 +144,7 @@ public class SeckillServiceImpl implements SeckillService {
         return null;
     }
 
+    //@SentinelResource( value = "kill")
     @Override
     public String kill(String killId, String key, Integer num) {
         MemberResponseVo responseVo = LoginUserInterceptor.threadLocal.get();
@@ -183,24 +201,26 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     private void saveSessionInfos(List<SeckillSessionsWithSkusVo> sessions) {
+        if (sessions != null && sessions.size() > 0) {
+            sessions.stream().forEach(session -> {
+                Long startTime = session.getStartTime().getTime();
+                Long endTime = session.getEndTime().getTime();
+                String key = SESSIONS_CACHE_PREFIX + startTime + "_" + endTime;
+                Boolean hasKey = redisTemplate.hasKey(key);
+                //
+                if (!hasKey) {
 
-        sessions.stream().forEach(session -> {
-            Long startTime = session.getStartTime().getTime();
-            Long endTime = session.getEndTime().getTime();
-            String key = SESSIONS_CACHE_PREFIX + startTime + "_" + endTime;
-            Boolean hasKey = redisTemplate.hasKey(key);
-            //
-            if (!hasKey) {
-
-                List<String> collect = session.getRelationSkus().stream()
-                        .map(item -> item.getPromotionSessionId() + "_" + item.getSkuId().toString())
-                        .collect(Collectors.toList());
-                if (collect != null && collect.size() > 0) {
-                    redisTemplate.opsForList().leftPushAll(key, collect);
+                    List<String> collect = session.getRelationSkus().stream()
+                            .map(item -> item.getPromotionSessionId() + "_" + item.getSkuId().toString())
+                            .collect(Collectors.toList());
+                    if (collect != null && collect.size() > 0) {
+                        redisTemplate.opsForList().leftPushAll(key, collect);
+                    }
                 }
-            }
 
-        });
+            });
+        }
+
 
     }
 
